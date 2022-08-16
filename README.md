@@ -1,4 +1,4 @@
-A bright and colorful latex style file!
+# A bright and colorful latex style file!
 
 ### Ideas
 - Colors: set color for each theorem
