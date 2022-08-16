@@ -1,3 +1,5 @@
+A bright and colorful latex style file!
+
 ### Ideas
 - Colors: set color for each theorem
 - header: enable/disable (class, name)
