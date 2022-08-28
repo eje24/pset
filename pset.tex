@@ -8,10 +8,27 @@
 \maketitle
 
 \newpsetproblem
+\begin{problem}[Polynomial time SAT-oracle Turing machine for Hamiltonian path]
+\end{problem}
 \begin{solution}
-	The solution to this problem is as follows...
+The solution involves three steps:
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Reduce the Hamiltonian path problem to SAT:} We construct the reduction to faithfully simulate testing for whether a given path is a Hamiltonian path from $s$ to $t$. This will make it easy to recover the Hamiltonian path from a satisfying assignment in step three. A Hamiltonian path travels through the $n=\abs{V}$ nodes of the graph $G$. Accordingly, we have $n^2$ variables: for every $1\le t,v \le n$, we have a variable $x_{t,v}$. This variable $x_{t,v}$ is the indicator variable for our path being at vertex $v$ at time $t$. The boolean formula will then check the following:
+    \begin{itemize}
+        \item Path is only at one point at any point in time: achieved via 
+        \[\bigwedge_{t=1}^n \left(\bigvee_{1\le u<v \le n} (\overline{x_{t,u}}\lor \overline{x_{t,v}})\right) \land (x_{t,1}\lor \dots \lor x_{t,n}).\]
+        \item Each vertex is visited once: achieved via 
+        \[\bigwedge_{v=1}^n \left(\bigvee_{1\le i<j \le n} (\overline{x_{i,v}}\lor \overline{x_{j,v}})\right) \land (x_{1,v}\lor \dots \lor x_{n,v}).\]
+        \item Directed edge between consecutive vertices: achieved via
+        \[\bigwedge_{\text{non-edge} (u,v)}\bigwedge_{t=1}^{n-1} (\overline{x_{t,u}}\lor\overline{x_{t+1,v}}).\]
+        \item Path starts at $s$ and ends at $t$: achieved via $x_{1,s}\land x_{n,t}$.
+    \end{itemize}
+    And-ing these requirements together yields a boolean expression $\phi$, whose satisfying assignments are in bijection with Hamiltonian paths in $G$ from $s$ to $t$. Additionally, the construction of $\phi$ takes only polynomial time (each expression is at most cubic in $n$).
+    \item \textbf{Use the SAT oracle to determine a solution to the resulting SAT problem, or conclude that non-exists and report accordingly:} Use the SAT oracle as a sub-routine to determine a satisfying assignment to $\phi$ by sequentially solving for each variable using the procedure described in problem two, reporting \textbf{No Hamiltonian Path} in the case that no satisfying assignment exists.
+    \item \textbf{Use the solution found in step two to construct a Hamiltonian path:} Check which variables $x_{t,v}$ in the satisfying assignment are set to true. This determines a unique Hamiltonian path from $s$ to $t$. Return this path.
+\end{enumerate}
+Finally, $M^\text{SAT}$ is then just the Turing machine which executes this procedure. 
 \end{solution}
 
-\newpsetproblem[The Second Problem]
 
 \end{document}
